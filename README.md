@@ -11,6 +11,13 @@ The project is structured with a central device and resource registry known as t
 ### Catalog
 The catalog is implemented in the script `catalog_registery.py`. It serves as the heart of the system, responsible for recording and organizing data related to devices and resources. The collected data is stored in a JSON file named `catalog.json`, which will ultimately serve as the project's database.
 
+### Device Connectors
+The `Device_connectors` directory has been added, containing the following files:
+
+1. **`device_connector.py`:** This script, in its current stage, registers all devices to the catalog. In the next stage, it will be responsible for gathering sensor data and communicating it to other parts of the system.
+
+2. **`devices_configuration.json`:** This JSON file contains configuration details, endpoints, and other device-specific information needed for the proper functioning of the system.
+
 ## Components
 Each plant unit is equipped wiht two main types of IoT devices:
 
