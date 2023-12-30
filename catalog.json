@@ -1,0 +1,172 @@
+{
+    "projectOwner": "Group2",
+    "projectName": "SkyFarming",
+    "lastUpdate": "2023-12-30 14:57:46",
+    "broker": {
+        "IP": "test.mosquitto.org",
+        "port": 1883
+    },
+    "plantKindList": [
+        {
+            "plantKind": "Lettuce",
+            "coldestTemperature": 15,
+            "hottestTemperature": 35,
+            "nutritionLevel": 0
+        }
+    ],
+    "plantsList": [
+        {
+            "levelID": 1,
+            "plantID": 1,
+            "plantKind": "Lettuce",
+            "usersList": [
+                {
+                    "userID": 1
+                }
+            ],
+            "devicesList": [],
+            "lastUpdate": "2023-12-29 12:15:39"
+        },
+        {
+            "levelID": 1,
+            "plantID": 2,
+            "plantKind": "Lettuce",
+            "usersList": [
+                {
+                    "userID": 1
+                },
+                {
+                    "userID": 2
+                }
+            ],
+            "devicesList": [],
+            "lastUpdate": "2023-12-29 12:15:39"
+        },
+        {
+            "levelID": 2,
+            "plantID": 1,
+            "plantKind": "Lettuce",
+            "usersList": [
+                {
+                    "userID": 1
+                }
+            ],
+            "devicesList": [],
+            "lastUpdate": "2023-12-29 12:15:39"
+        },
+        {
+            "levelID": 10,
+            "plantID": 1,
+            "plantKind": "Lettuce",
+            "usersList": [
+                {
+                    "userID": 1
+                }
+            ],
+            "devicesList": [
+                {
+                    "deviceID": 1,
+                    "deviceName": "DHT11",
+                    "deviceLocation": {
+                        "levelID": 10,
+                        "plantID": 1
+                    },
+                    "measureType": [
+                        "Temperature",
+                        "Humidity"
+                    ],
+                    "availableServices": [
+                        "MQTT",
+                        "REST"
+                    ],
+                    "servicesDetails": [
+                        {
+                            "serviceType": "MQTT",
+                            "topic": [
+                                "skyfarming/level1/plant1/temp",
+                                "skyfarming/level1/plant1/hum"
+                            ]
+                        },
+                        {
+                            "serviceType": "REST",
+                            "serviceIP": "dht11.org:8080"
+                        }
+                    ],
+                    "lastUpdate": "2023-12-30 14:54:28"
+                },
+                {
+                    "deviceID": 2,
+                    "deviceName": "VCNL4010",
+                    "deviceLocation": {
+                        "levelID": 10,
+                        "plantID": 1
+                    },
+                    "measureType": [
+                        "Light"
+                    ],
+                    "availableServices": [
+                        "MQTT"
+                    ],
+                    "servicesDetails": [
+                        {
+                            "serviceType": "MQTT",
+                            "topic": [
+                                "skyfarming/level1/plant1/light"
+                            ]
+                        }
+                    ],
+                    "lastUpdate": "2023-12-30 14:54:28"
+                }
+            ],
+            "lastUpdate": "2023-12-30 14:54:28"
+        },
+        {
+            "levelID": 5,
+            "plantID": 1,
+            "plantKind": "Lettuce",
+            "usersList": [
+                {
+                    "userID": 1
+                }
+            ],
+            "devicesList": [],
+            "lastUpdate": "2023-12-30 14:57:42"
+        },
+        {
+            "levelID": 6,
+            "plantID": 1,
+            "plantKind": "Lettuce",
+            "usersList": [
+                {
+                    "userID": 1
+                }
+            ],
+            "devicesList": [
+                {
+                    "deviceID": 10,
+                    "deviceName": "VCNL4010",
+                    "deviceLocation": {
+                        "levelID": 6,
+                        "plantID": 1
+                    },
+                    "measureType": [
+                        "Light"
+                    ],
+                    "availableServices": [
+                        "MQTT"
+                    ],
+                    "servicesDetails": [
+                        {
+                            "serviceType": "MQTT",
+                            "topic": [
+                                "skyfarming/level1/plant1/light"
+                            ]
+                        }
+                    ],
+                    "lastUpdate": "2023-12-30 16:43:35"
+                }
+            ],
+            "lastUpdate": "2023-12-30 16:43:35"
+        }
+    ]
+}
