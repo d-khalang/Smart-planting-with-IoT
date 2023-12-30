@@ -26,7 +26,7 @@ Each plant unit is equipped wiht two main types of IoT devices:
 2. **Actuator Devices:** These devices control physical components, enabling automation of processes critical to plant growth.
 
 ## Current Stage
-At this stage of development, the catalog has been implemented, and it successfully writes all system and device-related data to the `catalog.json` file.
+At this stage of development, the catalog and device connector scripts have been implemented. The catalog writes data to the `catalog.json` file, and the device connector registers devices to the catalog.
 
 ## Getting Started
 Loading ...
