@@ -1,5 +1,5 @@
 {
-    "levelID": 6,
+    "levelID": 0,
     "plantID": 1,
     "plantKind": "Lettuce",
     "usersList": [
@@ -8,14 +8,14 @@
       }
   ],
     "devicesList": [{
-        "deviceID": 10,
-        "deviceName": "VCNL4010",
+        "deviceID": 1,
+        "deviceName": "tempsen",
         "deviceLocation": {
-            "levelID": 6,
+            "levelID": 0,
             "plantID": 1
         },
         "measureType": [
-            "Light"
+            "Temperature"
         ],
         "availableServices": [
             "MQTT"
@@ -24,7 +24,7 @@
             {
                 "serviceType": "MQTT",
                 "topic": [
-                    "skyfarming/level1/plant1/light"
+                    "skyFarming/0/1/sensor/Temperature"
                 ]
             }
         ],
