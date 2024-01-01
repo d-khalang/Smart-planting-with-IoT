@@ -22,6 +22,9 @@ The `Device_connectors` directory now includes additional scripts:
 
 5. **`setting.json`:** This JSON file contains information about the broker, topic, and device connector IDs.
 
+### Control Units
+On progress
+
 ## Components
 Each plant unit is equipped with two main types of IoT devices:
 
