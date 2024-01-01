@@ -26,7 +26,7 @@ class senPublisher():
 class Device_connector():
     def __init__(self, catalog_url, plantConfig, baseClientID,DCID, broker, port):
         self.catalog_url, self.plantConfig = catalog_url, plantConfig
-        clientID = baseClientID+DCID+"_p"
+        clientID = baseClientID+DCID+"_DCS"    # Device connector sensor
         self.senPublisher = senPublisher(clientID, broker, port)
 
         levelID, plantID = DCID[0], DCID[1]
@@ -122,7 +122,3 @@ class Device_connector():
 
 
 
-
-## to have as many as device connector for each plant you can
-## instantiate as many raspbery class and register them
-## create plant map

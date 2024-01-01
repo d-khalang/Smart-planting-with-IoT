@@ -1,7 +1,7 @@
 {
     "projectOwner": "Group2",
-    "projectName": "SkyFarming",
-    "lastUpdate": "2023-12-30 14:57:46",
+    "projectName": "skyFarming",
+    "lastUpdate": "2024-01-01 18:33:50",
     "broker": {
         "IP": "test.mosquitto.org",
         "port": 1883
@@ -63,61 +63,7 @@
                     "userID": 1
                 }
             ],
-            "devicesList": [
-                {
-                    "deviceID": 1,
-                    "deviceName": "DHT11",
-                    "deviceLocation": {
-                        "levelID": 10,
-                        "plantID": 1
-                    },
-                    "measureType": [
-                        "Temperature",
-                        "Humidity"
-                    ],
-                    "availableServices": [
-                        "MQTT",
-                        "REST"
-                    ],
-                    "servicesDetails": [
-                        {
-                            "serviceType": "MQTT",
-                            "topic": [
-                                "skyfarming/level1/plant1/temp",
-                                "skyfarming/level1/plant1/hum"
-                            ]
-                        },
-                        {
-                            "serviceType": "REST",
-                            "serviceIP": "dht11.org:8080"
-                        }
-                    ],
-                    "lastUpdate": "2023-12-30 14:54:28"
-                },
-                {
-                    "deviceID": 2,
-                    "deviceName": "VCNL4010",
-                    "deviceLocation": {
-                        "levelID": 10,
-                        "plantID": 1
-                    },
-                    "measureType": [
-                        "Light"
-                    ],
-                    "availableServices": [
-                        "MQTT"
-                    ],
-                    "servicesDetails": [
-                        {
-                            "serviceType": "MQTT",
-                            "topic": [
-                                "skyfarming/level1/plant1/light"
-                            ]
-                        }
-                    ],
-                    "lastUpdate": "2023-12-30 14:54:28"
-                }
-            ],
+            "devicesList": [],
             "lastUpdate": "2023-12-30 14:54:28"
         },
         {
@@ -141,16 +87,28 @@
                     "userID": 1
                 }
             ],
+            "devicesList": [],
+            "lastUpdate": "2023-12-30 16:43:35"
+        },
+        {
+            "levelID": 0,
+            "plantID": 1,
+            "plantKind": "Lettuce",
+            "usersList": [
+                {
+                    "userID": 1
+                }
+            ],
             "devicesList": [
                 {
-                    "deviceID": 10,
-                    "deviceName": "VCNL4010",
+                    "deviceID": 1,
+                    "deviceName": "tempsen",
                     "deviceLocation": {
-                        "levelID": 6,
+                        "levelID": 0,
                         "plantID": 1
                     },
                     "measureType": [
-                        "Light"
+                        "Temperature"
                     ],
                     "availableServices": [
                         "MQTT"
@@ -159,14 +117,14 @@
                         {
                             "serviceType": "MQTT",
                             "topic": [
-                                "skyfarming/level1/plant1/light"
+                                "skyFarming/0/1/sensor/Temperature"
                             ]
                         }
                     ],
-                    "lastUpdate": "2023-12-30 16:43:35"
+                    "lastUpdate": "2024-01-01 18:33:50"
                 }
             ],
-            "lastUpdate": "2023-12-30 16:43:35"
+            "lastUpdate": "2024-01-01 18:33:50"
         }
     ]
 }

@@ -1,0 +1,6 @@
+{
+    "broker": "mqtt.eclipseprojects.io",
+    "port": 1883,
+    "baseTopic": "skyFarming",
+    "clientID": "skyFarming_DS4SST"
+}

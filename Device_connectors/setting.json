@@ -3,5 +3,39 @@
     "port": 1883,
     "baseTopic": "skyFarming",
     "clientID": "skyFarming_DS4SST",
-    "DCID_list": ["01"]
+    "DCID_dict": {
+        "01":{
+        "levelID": 0,
+        "plantID": 1,
+        "plantKind": "Lettuce",
+        "usersList": [
+          {
+              "userID": 1
+          }
+      ],
+        "devicesList": [{
+            "deviceID": 1,
+            "deviceName": "tempsen",
+            "deviceLocation": {
+                "levelID": 0,
+                "plantID": 1
+            },
+            "measureType": [
+                "Temperature"
+            ],
+            "availableServices": [
+                "MQTT"
+            ],
+            "servicesDetails": [
+                {
+                    "serviceType": "MQTT",
+                    "topic": [
+                        "skyFarming/0/1/sensor/Temperature"
+                    ]
+                }
+            ],
+            "lastUpdate": "2023-12-29 12:15:39"
+        }],
+        "lastUpdate": "2023-12-29 12:15:39"
+    }}
 }

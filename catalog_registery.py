@@ -9,6 +9,7 @@ class WebCatalog():
     def __init__(self, address):
         with open(address, 'r') as fptr:
             self.catalog = json.load(fptr)
+        self.mainTopic = self.catalog["projectName"]   # Using the project name as the main topic for evey plant unit
         self.broker = self.catalog["broker"]
         self.plantKinds = self.catalog["plantKindList"]
         self.plants = self.catalog["plantsList"]
@@ -31,6 +32,8 @@ class WebCatalog():
             if path == "broker":
                 return self.broker
             
+
+            # Retrive information about devices
             elif path == "devices":
                 return self.devices
             
@@ -45,6 +48,28 @@ class WebCatalog():
                 if theDevice:
                     return theDevice
                 else: return f"No device with id:{deviceID}"
+
+
+            # Retrive information about plants
+            elif path == "plants":
+                return self.plants
+            
+            elif path == "plant":
+                ## checking if the url is a device id
+                try:
+                    levelID, plantID = int(uri[1]), int(uri[2])
+                except:
+                    return "Unkown levelId and plantID entered, go to plant/{level id}/{plant id}"
+
+                thePlant = next(filter(lambda plant: plant["levelID"] == levelID and plant["plantID"] == plantID, self.plants), None) 
+                if thePlant:
+                    return thePlant
+                else: return f"No plant with levelId:{levelID} and plantID:{plantID}"
+
+
+            ## Retrieve information about the main topic, usful for the control units
+            elif path == "topic":
+                return self.mainTopic
             
             else:
                 return "No valid url. Enter a valid url among: broker, devices, device/{id}..."
@@ -162,7 +187,7 @@ class WebCatalog():
                 newDevice = cherrypy.request.json
                 theTime = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                 newDevice["lastUpdate"] = theTime
-                self.catalog["lastUpdate"] = theTime
+                
 
                 
                 ## adding the device in the plant which owenes the device
@@ -174,21 +199,27 @@ class WebCatalog():
                             if newDevice["deviceID"] == plant["devicesList"][i]["deviceID"]:
                                 plant["devicesList"][i] = newDevice
                                 plantUpdated = True
+
                         if not plantUpdated:
                             plant["devicesList"].append(newDevice)
                             deviceUpdated = True
+                            
 
                 ## return the status of the opperation
                 if plantUpdated:
+                    self.catalog["lastUpdate"] = theTime
                     self.deviceGetter()
                     # Rewrite the json catalog file
                     self.save_catalog()
                     return "Device is updated successfully in the corresponding plant section", 201
+                
                 elif deviceUpdated:
+                    self.catalog["lastUpdate"] = theTime
                     self.deviceGetter()
                     # Rewrite the json catalog file
                     self.save_catalog()
                     return "The plant has been found and device is added to its devices", 201
+                
                 else:
                     return "Not succesfull, probably plant and device does not exist"
                 # return self.catalog
@@ -211,6 +242,7 @@ class WebCatalog():
                     if plant["levelID"] == newPlant["levelID"] and plant["plantID"] == newPlant["plantID"]:
                         plant.update(newPlant)
                         plantUpdated = True
+                        self.catalog["lastUpdate"] = theTime
                         self.deviceGetter()
                         # Rewrite the json catalog file
                         self.save_catalog()
@@ -306,9 +338,11 @@ class WebCatalog():
 
     # Rewriting the catalog
     def save_catalog(self):
-        with open('catalog.json', 'w') as fptr:
-            json.dump(self.catalog, fptr, indent=4)
-
+        try:
+            with open('catalog.json', 'w') as fptr:
+                json.dump(self.catalog, fptr, indent=4)
+        except Exception as e:
+            print(f"Error saving catalog: {e}")
 
 if __name__ == "__main__":
     conf = {"/": {
