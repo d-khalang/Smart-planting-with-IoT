@@ -28,10 +28,11 @@ class Device_connector():
         self.catalog_url, self.plantConfig = catalog_url, plantConfig
         clientID = baseClientID+DCID+"_DCS"    # Device connector sensor
         self.senPublisher = senPublisher(clientID, broker, port)
+        self.DATA_SENDING_INTERVAL = 10    # each x seconds get the avg of each second data and send
 
         levelID, plantID = DCID[0], DCID[1]
         self.msg = {
-            "bn": f"skyFarming/{levelID}/{plantID}/sensor/",
+            "bn": f"skyFarming/sensors/{levelID}/{plantID}/",
             "e": [
                 {
                     "n": 'senKind',
@@ -52,10 +53,10 @@ class Device_connector():
 
         # Connect the publisher, publish the message and disconnect
         self.senPublisher.start()
-        print("publisher started")
+        print("\npublisher started")
         time.sleep(1)
         self.senPublisher.publish(msg["bn"], msg)
-        print("message published")
+        print(f"message published on topic: {msg['bn']}")
         time.sleep(1)
         self.senPublisher.stop()
         print("publisher stoped")
@@ -67,7 +68,7 @@ class Device_connector():
         tempData = []
 
         # Generate a value every second
-        for i in range(30):
+        for i in range(self.DATA_SENDING_INTERVAL):
             datum = self.tempSen.generate_data()
             tempData.append(datum)
             time.sleep(1)
@@ -76,7 +77,7 @@ class Device_connector():
         avg = sum(tempData)/len(tempData)
 
         # Updating the message
-        msg = self.msg
+        msg = self.msg.copy()
         msg['e'][0].update({"n":"temperature", "u":"Cel", "t":str(time.time()), "v":avg})
         msg["bn"] += "temperature"
 
@@ -111,6 +112,7 @@ class Device_connector():
                 return f"Unsuccessful PUT request, Unknown response{e}"
 
             if putReq_status == 201:
+                print("Plant registeration is updated successfully")
                 return "PUT request successful"
             else:
                 return f"""POST: {postReq.text}

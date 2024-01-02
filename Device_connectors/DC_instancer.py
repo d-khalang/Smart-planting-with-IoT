@@ -32,9 +32,9 @@ if __name__ == "__main__":
     while t < 600:
         if t%100 == 0:
             for DC in deviceConnectors.values():
-                print(DC.registerer())        
+                DC.registerer()       
             
         for DC in deviceConnectors.values():
-            print(DC.send_data())
+            DC.send_data()
         time.sleep(1)
         t+=1
