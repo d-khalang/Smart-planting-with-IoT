@@ -23,7 +23,11 @@ The `Device_connectors` directory now includes additional scripts:
 5. **`setting.json`:** This JSON file contains information about the broker, topic, and device connector IDs.
 
 ### Control Units
-On progress
+
+The Control Units play a vital role in ensuring optimal conditions for plant growth. Currently, the following script is in progress:
+
+1. **`control_unit_1.py`:** This script subscribes to the topics of all the sensors in the building, monitoring each level and plant ID. It checks the temperature by sending a GET request to the catalog and compares it with the suitable temperature for the specific plant. If the temperature is not within the appropriate range, the control unit sends commands to take corrective actions.
+
 
 ## Components
 Each plant unit is equipped with two main types of IoT devices:
