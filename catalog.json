@@ -1,7 +1,7 @@
 {
     "projectOwner": "Group2",
     "projectName": "skyFarming",
-    "lastUpdate": "2024-01-01 18:33:50",
+    "lastUpdate": "2024-01-02 18:45:06",
     "broker": {
         "IP": "test.mosquitto.org",
         "port": 1883
@@ -121,10 +121,10 @@
                             ]
                         }
                     ],
-                    "lastUpdate": "2024-01-01 18:33:50"
+                    "lastUpdate": "2024-01-02 18:45:06"
                 }
             ],
-            "lastUpdate": "2024-01-01 18:33:50"
+            "lastUpdate": "2024-01-02 18:45:06"
         }
     ]
 }

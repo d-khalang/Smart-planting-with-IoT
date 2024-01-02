@@ -66,6 +66,9 @@ class WebCatalog():
                     return thePlant
                 else: return f"No plant with levelId:{levelID} and plantID:{plantID}"
 
+            elif path == "plantkinds":
+                return self.plantKinds
+
 
             ## Retrieve information about the main topic, usful for the control units
             elif path == "topic":
