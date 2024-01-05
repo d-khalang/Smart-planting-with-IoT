@@ -1,7 +1,7 @@
 {
     "projectOwner": "Group2",
     "projectName": "skyFarming",
-    "lastUpdate": "2024-01-02 18:45:06",
+    "lastUpdate": "2024-01-05 18:43:26",
     "broker": {
         "IP": "test.mosquitto.org",
         "port": 1883
@@ -9,8 +9,16 @@
     "plantKindList": [
         {
             "plantKind": "Lettuce",
-            "coldestTemperature": 15,
+            "coldestTemperature": 20,
             "hottestTemperature": 35,
+            "bestTemperatureRange": [
+                25,
+                30
+            ],
+            "PHRange": [
+                5.4,
+                6.6
+            ],
             "nutritionLevel": 0
         }
     ],
@@ -101,8 +109,9 @@
             ],
             "devicesList": [
                 {
-                    "deviceID": 1,
+                    "deviceID": 1011,
                     "deviceName": "tempsen",
+                    "deviceStatus": "ON",
                     "deviceLocation": {
                         "levelID": 0,
                         "plantID": 1
@@ -117,14 +126,62 @@
                         {
                             "serviceType": "MQTT",
                             "topic": [
-                                "skyFarming/0/1/sensor/Temperature"
+                                "skyFarming/sensors/0/1/Temperature"
                             ]
                         }
                     ],
-                    "lastUpdate": "2024-01-02 18:45:06"
+                    "lastUpdate": "2024-01-05 18:43:26"
+                },
+                {
+                    "deviceID": 1012,
+                    "deviceName": "fan_switch",
+                    "deviceStatus": "OFF",
+                    "deviceLocation": {
+                        "levelID": 0,
+                        "plantID": 1
+                    },
+                    "measureType": [
+                        "Switch"
+                    ],
+                    "availableServices": [
+                        "MQTT"
+                    ],
+                    "servicesDetails": [
+                        {
+                            "serviceType": "MQTT",
+                            "topic": [
+                                "skyFarming/commands/0/1/fan_switch"
+                            ]
+                        }
+                    ],
+                    "lastUpdate": "2024-01-05 18:43:26"
+                },
+                {
+                    "deviceID": 1013,
+                    "deviceName": "heater_switch",
+                    "deviceStatus": "OFF",
+                    "deviceLocation": {
+                        "levelID": 0,
+                        "plantID": 1
+                    },
+                    "measureType": [
+                        "Switch"
+                    ],
+                    "availableServices": [
+                        "MQTT"
+                    ],
+                    "servicesDetails": [
+                        {
+                            "serviceType": "MQTT",
+                            "topic": [
+                                "skyFarming/commands/0/1/heater_switch"
+                            ]
+                        }
+                    ],
+                    "lastUpdate": "2024-01-05 18:43:26"
                 }
             ],
-            "lastUpdate": "2024-01-02 18:45:06"
+            "lastUpdate": "2024-01-05 18:43:26"
         }
     ]
 }

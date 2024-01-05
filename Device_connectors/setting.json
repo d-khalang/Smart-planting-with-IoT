@@ -14,8 +14,9 @@
           }
       ],
         "devicesList": [{
-            "deviceID": 1,
+            "deviceID": 1011,
             "deviceName": "tempsen",
+            "deviceStatus": "ON",
             "deviceLocation": {
                 "levelID": 0,
                 "plantID": 1
@@ -30,11 +31,59 @@
                 {
                     "serviceType": "MQTT",
                     "topic": [
-                        "skyFarming/0/1/sensor/Temperature"
+                        "skyFarming/sensors/0/1/Temperature"
                     ]
                 }
             ],
-            "lastUpdate": "2023-12-29 12:15:39"
+            "lastUpdate": ""
+        },
+        {
+            "deviceID": 1012,
+            "deviceName": "fan_switch",
+            "deviceStatus": "OFF",
+            "deviceLocation": {
+                "levelID": 0,
+                "plantID": 1
+            },
+            "measureType": [
+                "Switch"
+            ],
+            "availableServices": [
+                "MQTT"
+            ],
+            "servicesDetails": [
+                {
+                    "serviceType": "MQTT",
+                    "topic": [
+                        "skyFarming/commands/0/1/fan_switch"
+                    ]
+                }
+            ],
+            "lastUpdate": ""
+        },
+        {
+            "deviceID": 1013,
+            "deviceName": "heater_switch",
+            "deviceStatus": "OFF",
+            "deviceLocation": {
+                "levelID": 0,
+                "plantID": 1
+            },
+            "measureType": [
+                "Switch"
+            ],
+            "availableServices": [
+                "MQTT"
+            ],
+            "servicesDetails": [
+                {
+                    "serviceType": "MQTT",
+                    "topic": [
+                        "skyFarming/commands/0/1/heater_switch"
+                    ]
+                }
+            ],
+            "lastUpdate": ""
         }],
         "lastUpdate": "2023-12-29 12:15:39"
     }}
