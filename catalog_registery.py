@@ -24,7 +24,7 @@ class WebCatalog():
     @cherrypy.tools.json_out()
     def GET(self, *uri, **params):
         if len(uri)== 0:
-            return "Enter a valid url among: broker, devices, device/{id}..."
+            return "No valid url. Enter a valid url among: broker, devices, device/{id}, plants, plant/{levelID}/{plantID}, topic, plantkinds"
         else:
             path = uri[0].lower()
 
@@ -44,6 +44,7 @@ class WebCatalog():
                 except:
                     return "No device entered, go to device/{device id}"
                 
+                # The first device with that device ID
                 theDevice = next(filter(lambda device: device["deviceID"] == deviceID, self.devices), None)
                 if theDevice:
                     return theDevice
@@ -55,17 +56,19 @@ class WebCatalog():
                 return self.plants
             
             elif path == "plant":
-                ## checking if the url is a device id
+                ## checking if the level and plant ID is included in the URL
                 try:
                     levelID, plantID = int(uri[1]), int(uri[2])
                 except:
                     return "Unkown levelId and plantID entered, go to plant/{level id}/{plant id}"
 
+                # The first plant with that level and plant ID
                 thePlant = next(filter(lambda plant: plant["levelID"] == levelID and plant["plantID"] == plantID, self.plants), None) 
                 if thePlant:
                     return thePlant
                 else: return f"No plant with levelId:{levelID} and plantID:{plantID}"
 
+            # Retrive information about plant kinds
             elif path == "plantkinds":
                 return self.plantKinds
 
@@ -75,7 +78,7 @@ class WebCatalog():
                 return self.mainTopic
             
             else:
-                return "No valid url. Enter a valid url among: broker, devices, device/{id}..."
+                return "No valid url. Enter a valid url among: broker, devices, device/{id}, plants, plant/{levelID}/{plantID}, topic, plantkinds"
 
                 
 
@@ -101,7 +104,7 @@ class WebCatalog():
                 if any(device["deviceID"] == newDevice["deviceID"] for device in self.devices):
                     return "Device already exists", 202    
 
-                ## adding the device in the plant which owenes the device
+                ## adding the device in the plant which owns the device
                 levelID, plantID = newDevice["deviceLocation"]["levelID"], newDevice["deviceLocation"]["plantID"]
                 for plant in self.plants:
                     if plant["levelID"] == levelID and plant["plantID"] == plantID:
@@ -112,14 +115,14 @@ class WebCatalog():
                         self.catalog["lastUpdate"] = theTime
                         break
 
-                ## return the status of the opperation
+                ## return the status of the operation
                 if deviceAdded:
                     self.deviceGetter()
                     # Rewrite the json catalog file
                     self.save_catalog()
                     return "Item is added successfully", 201
                 else:
-                    return "Not succesfull"
+                    return "Not successfull"
                 # return self.catalog
 
             
