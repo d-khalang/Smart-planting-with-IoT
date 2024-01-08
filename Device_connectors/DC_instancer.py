@@ -4,7 +4,7 @@ import time
 
 if __name__ == "__main__":
     catalog_url = "http://127.0.0.1:8080/"
-    plantConfigFileName = "devices_configuration.json"
+    # plantConfigFileName = "devices_configuration.json"
     settingFile = "setting.json"
 
 

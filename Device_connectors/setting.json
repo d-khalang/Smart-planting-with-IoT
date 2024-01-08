@@ -22,7 +22,7 @@
                 "plantID": 1
             },
             "measureType": [
-                "Temperature"
+                "temperature"
             ],
             "availableServices": [
                 "MQTT"
@@ -31,7 +31,7 @@
                 {
                     "serviceType": "MQTT",
                     "topic": [
-                        "skyFarming/sensors/0/1/Temperature"
+                        "skyFarming/sensors/0/1/temperature"
                     ]
                 }
             ],
@@ -39,6 +39,54 @@
         },
         {
             "deviceID": 1012,
+            "deviceName": "PHsen",
+            "deviceStatus": "ON",
+            "deviceLocation": {
+                "levelID": 0,
+                "plantID": 1
+            },
+            "measureType": [
+                "PH"
+            ],
+            "availableServices": [
+                "MQTT"
+            ],
+            "servicesDetails": [
+                {
+                    "serviceType": "MQTT",
+                    "topic": [
+                        "skyFarming/sensors/0/1/PH"
+                    ]
+                }
+            ],
+            "lastUpdate": ""
+        },
+        {
+            "deviceID": 1013,
+            "deviceName": "lightpsen",
+            "deviceStatus": "ON",
+            "deviceLocation": {
+                "levelID": 0,
+                "plantID": 1
+            },
+            "measureType": [
+                "light"
+            ],
+            "availableServices": [
+                "MQTT"
+            ],
+            "servicesDetails": [
+                {
+                    "serviceType": "MQTT",
+                    "topic": [
+                        "skyFarming/sensors/0/1/light"
+                    ]
+                }
+            ],
+            "lastUpdate": ""
+        },
+        {
+            "deviceID": 1019,
             "deviceName": "fan_switch",
             "deviceStatus": "OFF",
             "deviceLocation": {
@@ -62,7 +110,7 @@
             "lastUpdate": ""
         },
         {
-            "deviceID": 1013,
+            "deviceID": 1018,
             "deviceName": "heater_switch",
             "deviceStatus": "OFF",
             "deviceLocation": {
