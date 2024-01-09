@@ -155,7 +155,7 @@ class Adopter():
 
 if __name__ == "__main__":
     catalog_url = "http://127.0.0.1:8080/"
-    API_key = "SG9EQF4I37UYYFHY"
+    API_key = "{Insert the channel API Key}"
     channel_API = f"https://api.thingspeak.com/update?api_key={API_key}&field"
     levelID = 0
     plantID = 1
