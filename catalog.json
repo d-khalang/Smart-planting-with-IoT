@@ -1,7 +1,7 @@
 {
     "projectOwner": "Group2",
     "projectName": "skyFarming",
-    "lastUpdate": "2024-01-08 12:59:47",
+    "lastUpdate": "2024-01-16 17:46:13",
     "broker": {
         "IP": "mqtt.eclipseprojects.io",
         "port": 1883
@@ -19,6 +19,8 @@
                 5.4,
                 6.6
             ],
+            "minLight": 200,
+            "minWaterLevel": 0.2,
             "nutritionLevel": 0
         }
     ],
@@ -27,6 +29,7 @@
             "levelID": 1,
             "plantID": 1,
             "plantKind": "Lettuce",
+            "plantingDate": "2023-12-20",
             "usersList": [
                 {
                     "userID": 1
@@ -39,6 +42,7 @@
             "levelID": 1,
             "plantID": 2,
             "plantKind": "Lettuce",
+            "plantingDate": "2023-12-22",
             "usersList": [
                 {
                     "userID": 1
@@ -54,6 +58,7 @@
             "levelID": 2,
             "plantID": 1,
             "plantKind": "Lettuce",
+            "plantingDate": "2023-12-20",
             "usersList": [
                 {
                     "userID": 1
@@ -66,6 +71,7 @@
             "levelID": 10,
             "plantID": 1,
             "plantKind": "Lettuce",
+            "plantingDate": "2023-12-19",
             "usersList": [
                 {
                     "userID": 1
@@ -78,6 +84,7 @@
             "levelID": 5,
             "plantID": 1,
             "plantKind": "Lettuce",
+            "plantingDate": "2023-12-17",
             "usersList": [
                 {
                     "userID": 1
@@ -90,6 +97,7 @@
             "levelID": 6,
             "plantID": 1,
             "plantKind": "Lettuce",
+            "plantingDate": "2023-12-25",
             "usersList": [
                 {
                     "userID": 1
@@ -102,6 +110,7 @@
             "levelID": 0,
             "plantID": 1,
             "plantKind": "Lettuce",
+            "plantingDate": "2023-12-29",
             "usersList": [
                 {
                     "userID": 1
@@ -130,7 +139,7 @@
                             ]
                         }
                     ],
-                    "lastUpdate": "2024-01-08 12:28:18"
+                    "lastUpdate": "2024-01-16 17:46:13"
                 },
                 {
                     "deviceID": 1012,
@@ -154,7 +163,7 @@
                             ]
                         }
                     ],
-                    "lastUpdate": "2024-01-08 12:28:18"
+                    "lastUpdate": "2024-01-16 17:46:13"
                 },
                 {
                     "deviceID": 1013,
@@ -178,7 +187,7 @@
                             ]
                         }
                     ],
-                    "lastUpdate": "2024-01-08 12:28:18"
+                    "lastUpdate": "2024-01-16 17:46:13"
                 },
                 {
                     "deviceID": 1019,
@@ -202,7 +211,7 @@
                             ]
                         }
                     ],
-                    "lastUpdate": "2024-01-08 12:28:18"
+                    "lastUpdate": "2024-01-16 17:46:13"
                 },
                 {
                     "deviceID": 1018,
@@ -226,10 +235,10 @@
                             ]
                         }
                     ],
-                    "lastUpdate": "2024-01-08 12:28:18"
+                    "lastUpdate": "2024-01-16 17:46:13"
                 }
             ],
-            "lastUpdate": "2024-01-08 12:28:18"
+            "lastUpdate": "2024-01-16 17:46:13"
         }
     ]
 }
