@@ -1,7 +1,7 @@
 {
     "projectOwner": "Group2",
     "projectName": "skyFarming",
-    "lastUpdate": "2024-01-16 17:46:13",
+    "lastUpdate": "2024-01-21 16:16:10",
     "broker": {
         "IP": "mqtt.eclipseprojects.io",
         "port": 1883
@@ -19,9 +19,27 @@
                 5.4,
                 6.6
             ],
-            "minLight": 200,
+            "vegetativeLightRange": [
+                200,
+                400
+            ],
+            "floweringLightRang": [
+                400,
+                600
+            ],
             "minWaterLevel": 0.2,
-            "nutritionLevel": 0
+            "seedingTDSRange": [
+                100,
+                200
+            ],
+            "vegetativeTDSRange": [
+                400,
+                800
+            ],
+            "floweringTDSRang": [
+                600,
+                1000
+            ]
         }
     ],
     "plantsList": [
@@ -121,6 +139,10 @@
                     "deviceID": 1011,
                     "deviceName": "tempsen",
                     "deviceStatus": "ON",
+                    "availableStatuses": [
+                        "OFF",
+                        "ON"
+                    ],
                     "deviceLocation": {
                         "levelID": 0,
                         "plantID": 1
@@ -139,12 +161,16 @@
                             ]
                         }
                     ],
-                    "lastUpdate": "2024-01-16 17:46:13"
+                    "lastUpdate": "2024-01-21 16:16:10"
                 },
                 {
                     "deviceID": 1012,
                     "deviceName": "PHsen",
                     "deviceStatus": "ON",
+                    "availableStatuses": [
+                        "OFF",
+                        "ON"
+                    ],
                     "deviceLocation": {
                         "levelID": 0,
                         "plantID": 1
@@ -163,12 +189,16 @@
                             ]
                         }
                     ],
-                    "lastUpdate": "2024-01-16 17:46:13"
+                    "lastUpdate": "2024-01-21 16:16:10"
                 },
                 {
                     "deviceID": 1013,
-                    "deviceName": "lightpsen",
+                    "deviceName": "lightsen",
                     "deviceStatus": "ON",
+                    "availableStatuses": [
+                        "OFF",
+                        "ON"
+                    ],
                     "deviceLocation": {
                         "levelID": 0,
                         "plantID": 1
@@ -187,12 +217,16 @@
                             ]
                         }
                     ],
-                    "lastUpdate": "2024-01-16 17:46:13"
+                    "lastUpdate": "2024-01-21 16:16:10"
                 },
                 {
                     "deviceID": 1019,
                     "deviceName": "fan_switch",
                     "deviceStatus": "OFF",
+                    "availableStatuses": [
+                        "OFF",
+                        "ON"
+                    ],
                     "deviceLocation": {
                         "levelID": 0,
                         "plantID": 1
@@ -211,12 +245,16 @@
                             ]
                         }
                     ],
-                    "lastUpdate": "2024-01-16 17:46:13"
+                    "lastUpdate": "2024-01-21 16:16:10"
                 },
                 {
                     "deviceID": 1018,
                     "deviceName": "heater_switch",
                     "deviceStatus": "OFF",
+                    "availableStatuses": [
+                        "OFF",
+                        "ON"
+                    ],
                     "deviceLocation": {
                         "levelID": 0,
                         "plantID": 1
@@ -235,10 +273,128 @@
                             ]
                         }
                     ],
-                    "lastUpdate": "2024-01-16 17:46:13"
+                    "lastUpdate": "2024-01-21 16:16:10"
+                },
+                {
+                    "deviceID": 1017,
+                    "deviceName": "light_switch",
+                    "deviceStatus": "OFF",
+                    "availableStatuses": [
+                        "OFF",
+                        "LOW",
+                        "MID",
+                        "HIGH"
+                    ],
+                    "deviceLocation": {
+                        "levelID": 0,
+                        "plantID": 1
+                    },
+                    "measureType": [
+                        "Switch"
+                    ],
+                    "availableServices": [
+                        "MQTT"
+                    ],
+                    "servicesDetails": [
+                        {
+                            "serviceType": "MQTT",
+                            "topic": [
+                                "skyFarming/commands/0/1/light_switch"
+                            ]
+                        }
+                    ],
+                    "lastUpdate": "2024-01-21 16:16:10"
+                },
+                {
+                    "deviceID": 1016,
+                    "deviceName": "PH_actuator",
+                    "deviceStatus": "ON",
+                    "availableStatuses": [
+                        "ON",
+                        "OFF",
+                        "release_PH_high",
+                        "release_PH_low"
+                    ],
+                    "deviceLocation": {
+                        "levelID": 0,
+                        "plantID": 1
+                    },
+                    "measureType": [
+                        "Switch"
+                    ],
+                    "availableServices": [
+                        "MQTT"
+                    ],
+                    "servicesDetails": [
+                        {
+                            "serviceType": "MQTT",
+                            "topic": [
+                                "skyFarming/commands/0/1/PH_actuator"
+                            ]
+                        }
+                    ],
+                    "lastUpdate": "2024-01-21 16:16:10"
+                },
+                {
+                    "deviceID": 1015,
+                    "deviceName": "water_pump",
+                    "deviceStatus": "OFF",
+                    "availableStatuses": [
+                        "ON",
+                        "OFF",
+                        "pour_water"
+                    ],
+                    "deviceLocation": {
+                        "levelID": 0,
+                        "plantID": 1
+                    },
+                    "measureType": [
+                        "Switch"
+                    ],
+                    "availableServices": [
+                        "MQTT"
+                    ],
+                    "servicesDetails": [
+                        {
+                            "serviceType": "MQTT",
+                            "topic": [
+                                "skyFarming/commands/0/1/water_pump"
+                            ]
+                        }
+                    ],
+                    "lastUpdate": "2024-01-21 16:16:10"
+                },
+                {
+                    "deviceID": 1014,
+                    "deviceName": "TDS_actuator",
+                    "deviceStatus": "OFF",
+                    "availableStatuses": [
+                        "ON",
+                        "OFF",
+                        "release_solution"
+                    ],
+                    "deviceLocation": {
+                        "levelID": 0,
+                        "plantID": 1
+                    },
+                    "measureType": [
+                        "Switch"
+                    ],
+                    "availableServices": [
+                        "MQTT"
+                    ],
+                    "servicesDetails": [
+                        {
+                            "serviceType": "MQTT",
+                            "topic": [
+                                "skyFarming/commands/0/1/TDS_actuator"
+                            ]
+                        }
+                    ],
+                    "lastUpdate": "2024-01-21 16:16:10"
                 }
             ],
-            "lastUpdate": "2024-01-16 17:46:13"
+            "lastUpdate": "2024-01-21 16:16:10"
         }
     ]
 }
