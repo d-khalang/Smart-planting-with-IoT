@@ -70,18 +70,19 @@ class Device_connector():
         self.senPublisher.start()
         print("\npublisher started")
         time.sleep(1)
+
         self.senPublisher.publish(msgTemp["bn"], msgTemp)
         print(f"message {msgTemp['e'][0]['v']} published on topic: {msgTemp['bn']}")
-
+        time.sleep(1)
         self.senPublisher.publish(msgLight["bn"], msgLight)
         print(f"message {msgLight['e'][0]['v']} published on topic: {msgLight['bn']}")
-
+        time.sleep(1)
         self.senPublisher.publish(msgPH["bn"], msgPH)
         print(f"message {msgPH['e'][0]['v']} published on topic: {msgPH['bn']}")
-
+        time.sleep(1)
         self.senPublisher.publish(msgWaterLevel["bn"], msgWaterLevel)
         print(f"message {msgWaterLevel['e'][0]['v']} published on topic: {msgWaterLevel['bn']}")
-
+        time.sleep(1)
         self.senPublisher.publish(msgTDS["bn"], msgTDS)
         print(f"message {msgTDS['e'][0]['v']} published on topic: {msgTDS['bn']}")
 
@@ -95,7 +96,7 @@ class Device_connector():
     def get_sen_data(self):
         tempData, lightData, PHData, waterLevelData, TDSData = [], [], [], [], []
 
-        # Generate a value every second
+        # Generate a value every second for every sensor
         for i in range(self.DATA_SENDING_INTERVAL):
             datum = self.tempSen.generate_data()
             tempData.append(datum)
@@ -114,12 +115,13 @@ class Device_connector():
             time.sleep(1)
         
         # !!! create a function to get average and change the message
+            # there must be a data dict having the keys temp, light, ....
         # Get the mean each 10 second
-        avgTemp = sum(tempData)/len(tempData)
-        avgLight = sum(lightData)/len(lightData)
-        avgPH = sum(PHData)/len(PHData)
-        avgWaterLevel = sum(waterLevelData)/len(waterLevelData)
-        avgTDS = sum(TDSData)/len(TDSData)
+        avgTemp = round(sum(tempData)/len(tempData), 1)
+        avgLight = round(sum(lightData)/len(lightData), 1)
+        avgPH = round(sum(PHData)/len(PHData), 2)
+        avgWaterLevel = round(sum(waterLevelData)/len(waterLevelData), 2)
+        avgTDS = round(sum(TDSData)/len(TDSData), 1)
 
         # Updating the message
         msgTemp, msgLight, msgPH, msgWaterLevel, msgTDS = copy.deepcopy(self.msg), copy.deepcopy(self.msg), copy.deepcopy(self.msg), copy.deepcopy(self.msg), copy.deepcopy(self.msg),
