@@ -1,7 +1,7 @@
 {
     "projectOwner": "Group2",
     "projectName": "skyFarming",
-    "lastUpdate": "2024-01-21 16:16:10",
+    "lastUpdate": "2024-01-26 17:36:07",
     "broker": {
         "IP": "mqtt.eclipseprojects.io",
         "port": 1883
@@ -43,19 +43,6 @@
         }
     ],
     "plantsList": [
-        {
-            "levelID": 1,
-            "plantID": 1,
-            "plantKind": "Lettuce",
-            "plantingDate": "2023-12-20",
-            "usersList": [
-                {
-                    "userID": 1
-                }
-            ],
-            "devicesList": [],
-            "lastUpdate": "2023-12-29 12:15:39"
-        },
         {
             "levelID": 1,
             "plantID": 2,
@@ -161,7 +148,7 @@
                             ]
                         }
                     ],
-                    "lastUpdate": "2024-01-21 16:16:10"
+                    "lastUpdate": "2024-01-26 17:35:06"
                 },
                 {
                     "deviceID": 1012,
@@ -189,7 +176,7 @@
                             ]
                         }
                     ],
-                    "lastUpdate": "2024-01-21 16:16:10"
+                    "lastUpdate": "2024-01-26 17:35:06"
                 },
                 {
                     "deviceID": 1013,
@@ -217,7 +204,7 @@
                             ]
                         }
                     ],
-                    "lastUpdate": "2024-01-21 16:16:10"
+                    "lastUpdate": "2024-01-26 17:35:06"
                 },
                 {
                     "deviceID": 1019,
@@ -245,7 +232,7 @@
                             ]
                         }
                     ],
-                    "lastUpdate": "2024-01-21 16:16:10"
+                    "lastUpdate": "2024-01-26 17:35:06"
                 },
                 {
                     "deviceID": 1018,
@@ -273,7 +260,7 @@
                             ]
                         }
                     ],
-                    "lastUpdate": "2024-01-21 16:16:10"
+                    "lastUpdate": "2024-01-26 17:35:06"
                 },
                 {
                     "deviceID": 1017,
@@ -303,7 +290,7 @@
                             ]
                         }
                     ],
-                    "lastUpdate": "2024-01-21 16:16:10"
+                    "lastUpdate": "2024-01-26 17:35:06"
                 },
                 {
                     "deviceID": 1016,
@@ -333,7 +320,7 @@
                             ]
                         }
                     ],
-                    "lastUpdate": "2024-01-21 16:16:10"
+                    "lastUpdate": "2024-01-26 17:35:06"
                 },
                 {
                     "deviceID": 1015,
@@ -362,7 +349,7 @@
                             ]
                         }
                     ],
-                    "lastUpdate": "2024-01-21 16:16:10"
+                    "lastUpdate": "2024-01-26 17:35:06"
                 },
                 {
                     "deviceID": 1014,
@@ -391,10 +378,23 @@
                             ]
                         }
                     ],
-                    "lastUpdate": "2024-01-21 16:16:10"
+                    "lastUpdate": "2024-01-26 17:35:06"
                 }
             ],
-            "lastUpdate": "2024-01-21 16:16:10"
+            "lastUpdate": "2024-01-26 17:35:06"
+        },
+        {
+            "levelID": 1,
+            "plantID": 1,
+            "plantKind": "Lettuce",
+            "plantingDate": "2023-12-29",
+            "usersList": [
+                {
+                    "userID": 1
+                }
+            ],
+            "devicesList": [],
+            "lastUpdate": "2024-01-26 17:35:07"
         }
     ]
 }
