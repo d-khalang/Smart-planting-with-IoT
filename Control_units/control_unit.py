@@ -111,26 +111,8 @@ class Controler():
 
     # Processing the temperature data for each subtopic(correcponding level and plant unit)
     def send_temp_command(self, levelID, plantID, value):
-        # No need to update every time as it is being updated each 10 min
-        # Updating the plant info by a get request to the catalog
-        # try:
-        #     thePlant_req = requests.get(self.catalog_url+"plant/"+str(levelID)+"/"+str(plantID))
-        
-        # except requests.exceptions.RequestException as e:
-        #     return f"Error during GET request for getting the plant: {e}"
-
         # Get the specific plant dictionary and its plant kind name
         plant, plantKindName = self.find_plant(levelID, plantID)
-        # other way: stororing and updating all the plants each time
-        # plantFound = False
-        # for plant in self.plants:
-        #     if plant["levelID"] == levelID and plant["plantID"] == plantID:
-        #         plantKindName = plant["plantKind"]
-        #         plantFound = True
-        #         break
-        # if not plantFound:
-        #     print(f"Plant not present. levelID: {levelID}, plantID: {plantID}")
-        #     return
         
         # Getting the suitable temperature of the corresponding plant kind
         for plantKindDict in self.plantKinds:
@@ -149,39 +131,43 @@ class Controler():
 
         if not (fan_status and heater_status):
             print('failed to get the status of the fan and heater')
-        
-        # Structure the SenML message
-        msg = copy.deepcopy(self.msg)
 
-        # Assigning the same level and plant ID as the message received to the base name (also the topic)
-        msg["bn"] += f"{levelID}/{plantID}/"
-        topic = msg["bn"]
-        msg["e"][0]["t"] = str(time.time())
-        
-        # Check the temperature as regard to the plant suitable temperature
-        if value < minTemp and heater_status == "OFF":
-            print("Temperature less than threshold, Turn ON the heater")
-            topic += "heater_switch"
-            msg["e"][0]["v"] = "ON"
+        # Checking if actuator is operating
+        if (fan_status and heater_status) != "DISABLE":
+            # Structure the SenML message
+            msg = copy.deepcopy(self.msg)
 
-        elif value > maxTemp and fan_status == "OFF":
-            print("Temperature more than threshold, Turn ON the fan")
-            topic += "fan_switch"
-            msg["e"][0]["v"] = "ON"
-        
-        elif value in range(bestTempRange[0], bestTempRange[1]):
-            if heater_status == "ON":
+            # Assigning the same level and plant ID as the message received to the base name (also the topic)
+            msg["bn"] += f"{levelID}/{plantID}/"
+            topic = msg["bn"]
+            msg["e"][0]["t"] = str(time.time())
+            
+            # Check the temperature as regard to the plant suitable temperature
+            if value < minTemp and heater_status == "OFF":
+                print("Temperature less than threshold, Turn ON the heater")
                 topic += "heater_switch"
-                msg["e"][0]["v"] = "OFF"
-            if fan_status == "ON":
-                topic += "fan_switch"
-                msg["e"][0]["v"] = "OFF"
+                msg["e"][0]["v"] = "ON"
 
-        # Returning the message carring on the order
-        if msg["e"][0]["v"]:
-            # Sending command to the actuators    
-            self.client.myPublish(topic, msg)
-            print(f"{msg['e'][0]['v']} is published on topic: {topic}")
+            elif value > maxTemp and fan_status == "OFF":
+                print("Temperature more than threshold, Turn ON the fan")
+                topic += "fan_switch"
+                msg["e"][0]["v"] = "ON"
+            
+            elif value in range(bestTempRange[0], bestTempRange[1]):
+                if heater_status == "ON":
+                    topic += "heater_switch"
+                    msg["e"][0]["v"] = "OFF"
+                if fan_status == "ON":
+                    topic += "fan_switch"
+                    msg["e"][0]["v"] = "OFF"
+
+            # Returning the message carring on the order
+            if msg["e"][0]["v"]:
+                # Sending command to the actuators    
+                self.client.myPublish(topic, msg)
+                print(f"{msg['e'][0]['v']} is published on topic: {topic}")
+        else:
+            print("The heating actuators are DISABLE!")
             
         
     # Processing the brightness data and send command if intervention is needed
@@ -203,79 +189,83 @@ class Controler():
         if not lightSwitch_status:
             print('failed to get the status of the light switch')
 
-        plantingDate = plant["plantingDate"]
-        plantAge = self.days_difference_from_today(plantingDate)
+        # Checking if actuator is operating
+        if lightSwitch_status != "DISABLE":
+            plantingDate = plant["plantingDate"]
+            plantAge = self.days_difference_from_today(plantingDate)
 
-        # Structure the SenML message
-        msg = copy.deepcopy(self.msg)
+            # Structure the SenML message
+            msg = copy.deepcopy(self.msg)
 
-        # Assigning the same level and plant ID as the message received to the base name (also the topic)
-        msg["bn"] += f"{levelID}/{plantID}/"
-        topic = msg["bn"]
-        msg["e"][0]["t"] = str(time.time())
-        msgValue = None
+            # Assigning the same level and plant ID as the message received to the base name (also the topic)
+            msg["bn"] += f"{levelID}/{plantID}/"
+            topic = msg["bn"]
+            msg["e"][0]["t"] = str(time.time())
+            msgValue = None
 
-        ## availableStatuses: ["OFF","LOW","MID","HIGH"]
-        # Vegetative stage
-        if plantAge <= 15:
-            # If brightness is less that what is expected in vegetetive stage
-            # Ligh switch will be put on one level stronger
-            if value < vegetativeLightRange[0]:
-                if lightSwitch_status == "OFF":
-                    msgValue = "LOW"
-                elif lightSwitch_status == "LOW":
-                    msgValue = "MID"
-                elif lightSwitch_status == "MID":
-                    msgValue = "HIGH"
+            ## availableStatuses: ["OFF","LOW","MID","HIGH"]
+            # Vegetative stage
+            if plantAge <= 15:
+                # If brightness is less that what is expected in vegetetive stage
+                # Ligh switch will be put on one level stronger
+                if value < vegetativeLightRange[0]:
+                    if lightSwitch_status == "OFF":
+                        msgValue = "LOW"
+                    elif lightSwitch_status == "LOW":
+                        msgValue = "MID"
+                    elif lightSwitch_status == "MID":
+                        msgValue = "HIGH"
 
-            # If brightness is in the range of flowering stage
-            # Ligh switch will be put on one level weaker
-            elif value in range(floweringLightRang[0], floweringLightRang[1]):
-                if lightSwitch_status == "HIGH":
-                    msgValue = "MID"
-                elif lightSwitch_status == "MID":
-                    msgValue = "LOW"
-                elif lightSwitch_status == "LOW":
-                    msgValue = "OFF"
+                # If brightness is in the range of flowering stage
+                # Ligh switch will be put on one level weaker
+                elif value in range(floweringLightRang[0], floweringLightRang[1]):
+                    if lightSwitch_status == "HIGH":
+                        msgValue = "MID"
+                    elif lightSwitch_status == "MID":
+                        msgValue = "LOW"
+                    elif lightSwitch_status == "LOW":
+                        msgValue = "OFF"
 
-            # If brightness is way more than what is expected 
-            # Ligh switch will be shut down
-            elif value > floweringLightRang[1]:
-                if lightSwitch_status != "OFF":
-                    msgValue = "OFF"
-                
+                # If brightness is way more than what is expected 
+                # Ligh switch will be shut down
+                elif value > floweringLightRang[1]:
+                    if lightSwitch_status != "OFF":
+                        msgValue = "OFF"
+                    
 
-        # Flowering stage
-        elif plantAge > 15:
-            ## Set the switch to full power
-            if value < vegetativeLightRange[0]:
-                if lightSwitch_status != "HIGH":
-                    msgValue = "HIGH"
+            # Flowering stage
+            elif plantAge > 15:
+                ## Set the switch to full power
+                if value < vegetativeLightRange[0]:
+                    if lightSwitch_status != "HIGH":
+                        msgValue = "HIGH"
 
-            # One level forward
-            elif value in range(vegetativeLightRange[0], vegetativeLightRange[1]):
-                if lightSwitch_status == "OFF":
-                    msgValue = "LOW"
-                elif lightSwitch_status == "LOW":
-                    msgValue = "MID"
-                elif lightSwitch_status == "MID":
-                    msgValue = "HIGH"
+                # One level forward
+                elif value in range(vegetativeLightRange[0], vegetativeLightRange[1]):
+                    if lightSwitch_status == "OFF":
+                        msgValue = "LOW"
+                    elif lightSwitch_status == "LOW":
+                        msgValue = "MID"
+                    elif lightSwitch_status == "MID":
+                        msgValue = "HIGH"
 
-            # One level backward
-            elif value > floweringLightRang[1]:
-                if lightSwitch_status == "HIGH":
-                    msgValue = "MID"
-                elif lightSwitch_status == "MID":
-                    msgValue = "LOW"
-                elif lightSwitch_status == "LOW":
-                    msgValue = "OFF"
+                # One level backward
+                elif value > floweringLightRang[1]:
+                    if lightSwitch_status == "HIGH":
+                        msgValue = "MID"
+                    elif lightSwitch_status == "MID":
+                        msgValue = "LOW"
+                    elif lightSwitch_status == "LOW":
+                        msgValue = "OFF"
 
-        if msgValue:
-            topic += "light_switch"
-            msg["e"][0]["v"] = msgValue
-            # Sending command to the actuators    
-            self.client.myPublish(topic, msg)
-            print(f"{msg['e'][0]['v']} is published on topic: {topic}")
+            if msgValue:
+                topic += "light_switch"
+                msg["e"][0]["v"] = msgValue
+                # Sending command to the actuators    
+                self.client.myPublish(topic, msg)
+                print(f"{msg['e'][0]['v']} is published on topic: {topic}")
+        else:
+            print("Light actuator is DISABLE!")
 
 
 
@@ -298,30 +288,33 @@ class Controler():
         if not PHActuator_status:
             print('failed to get the status of the PH actuator')
 
-        plantingDate = plant["plantingDate"]
+        # Checking if actuator is operating
+        if PHActuator_status != "DISABLE":
+            plantingDate = plant["plantingDate"]
 
-        # Structure the SenML message
-        msg = copy.deepcopy(self.msg)
+            # Structure the SenML message
+            msg = copy.deepcopy(self.msg)
 
-        # Assigning the same level and plant ID as the message received to the base name (also the topic)
-        msg["bn"] += f"{levelID}/{plantID}/"
-        topic = msg["bn"]
-        msg["e"][0]["t"] = str(time.time())
-        msgValue = None
+            # Assigning the same level and plant ID as the message received to the base name (also the topic)
+            msg["bn"] += f"{levelID}/{plantID}/"
+            topic = msg["bn"]
+            msg["e"][0]["t"] = str(time.time())
+            msgValue = None
 
-        # Setting the command
-        if value < PHRange[0]:
-            msgValue = "release_PH_high"
-        elif value > PHRange[1]:
-            msgValue = "release_PH_low"
+            # Setting the command
+            if value < PHRange[0]:
+                msgValue = "release_PH_high"
+            elif value > PHRange[1]:
+                msgValue = "release_PH_low"
 
-        if msgValue:
-            topic += "PH_actuator"
-            msg["e"][0]["v"] = msgValue
-            # Sending command to the actuators    
-            self.client.myPublish(topic, msg)
-            print(f"{msg['e'][0]['v']} is published on topic: {topic}")
-
+            if msgValue:
+                topic += "PH_actuator"
+                msg["e"][0]["v"] = msgValue
+                # Sending command to the actuators    
+                self.client.myPublish(topic, msg)
+                print(f"{msg['e'][0]['v']} is published on topic: {topic}")
+        else:
+            print("PH actuator is DISABLE!")
         
 
     # Processing the water level data and send command if intervention is needed
@@ -343,26 +336,29 @@ class Controler():
         if not waterPump_status:
             print('failed to get the status of the water pump')
 
-        # Structure the SenML message
-        msg = copy.deepcopy(self.msg)
+        # Checking if actuator is operating
+        if waterPump_status != "DISABLE":
+            # Structure the SenML message
+            msg = copy.deepcopy(self.msg)
 
-        # Assigning the same level and plant ID as the message received to the base name (also the topic)
-        msg["bn"] += f"{levelID}/{plantID}/"
-        topic = msg["bn"]
-        msg["e"][0]["t"] = str(time.time())
-        msgValue = None
+            # Assigning the same level and plant ID as the message received to the base name (also the topic)
+            msg["bn"] += f"{levelID}/{plantID}/"
+            topic = msg["bn"]
+            msg["e"][0]["t"] = str(time.time())
+            msgValue = None
 
-        # Setting the command
-        if value < minWater:
-            msgValue = "pour_water"
+            # Setting the command
+            if value < minWater:
+                msgValue = "pour_water"
 
-        if msgValue:
-            topic += "water_pump"
-            msg["e"][0]["v"] = msgValue
-            # Sending command to the actuators    
-            self.client.myPublish(topic, msg)
-            print(f"{msg['e'][0]['v']} is published on topic: {topic}")
-
+            if msgValue:
+                topic += "water_pump"
+                msg["e"][0]["v"] = msgValue
+                # Sending command to the actuators    
+                self.client.myPublish(topic, msg)
+                print(f"{msg['e'][0]['v']} is published on topic: {topic}")
+        else:
+            print("Water pump is DISABLE!")
 
 
 
@@ -385,42 +381,46 @@ class Controler():
         if not TDSActuator_status:
             print('failed to get the status of the light switch')
 
-        plantingDate = plant["plantingDate"]
-        plantAge = self.days_difference_from_today(plantingDate)
+        # Checking if actuator is operating
+        if TDSActuator_status != "DISABLE":
+            plantingDate = plant["plantingDate"]
+            plantAge = self.days_difference_from_today(plantingDate)
 
-        # Structure the SenML message
-        msg = copy.deepcopy(self.msg)
+            # Structure the SenML message
+            msg = copy.deepcopy(self.msg)
 
-        # Assigning the same level and plant ID as the message received to the base name (also the topic)
-        msg["bn"] += f"{levelID}/{plantID}/"
-        topic = msg["bn"]
-        msg["e"][0]["t"] = str(time.time())
-        msgValue = None
+            # Assigning the same level and plant ID as the message received to the base name (also the topic)
+            msg["bn"] += f"{levelID}/{plantID}/"
+            topic = msg["bn"]
+            msg["e"][0]["t"] = str(time.time())
+            msgValue = None
 
-        ## The actuator can only 'release solution' which we assume increase the TDS around 100 ppm
-        # seeding stage
-        if plantAge <= 5:
-            # If TDs is less that what is expected in seeding stage
-            if value < seedingTDSRange[0]:
-                msgValue = "release_solution"
+            ## The actuator can only 'release solution' which we assume increase the TDS around 100 ppm
+            # seeding stage
+            if plantAge <= 5:
+                # If TDs is less that what is expected in seeding stage
+                if value < seedingTDSRange[0]:
+                    msgValue = "release_solution"
 
-        # Vegetative stage
-        elif plantAge > 5 and plantAge <= 15:
-            if value < floweringTDSRang[0]:
-                msgValue = "release_solution"
+            # Vegetative stage
+            elif plantAge > 5 and plantAge <= 15:
+                if value < floweringTDSRang[0]:
+                    msgValue = "release_solution"
 
-        # Flowering stage
-        elif plantAge > 15:
-            if value < vegetativeTDSRange[0]:
-                msgValue = "release_solution"
+            # Flowering stage
+            elif plantAge > 15:
+                if value < vegetativeTDSRange[0]:
+                    msgValue = "release_solution"
 
 
-        if msgValue:
-            topic += "TDS_actuator"
-            msg["e"][0]["v"] = msgValue
-            # Sending command to the actuators    
-            self.client.myPublish(topic, msg)
-            print(f"{msg['e'][0]['v']} is published on topic: {topic}")
+            if msgValue:
+                topic += "TDS_actuator"
+                msg["e"][0]["v"] = msgValue
+                # Sending command to the actuators    
+                self.client.myPublish(topic, msg)
+                print(f"{msg['e'][0]['v']} is published on topic: {topic}")
+        else:
+            print("TDS actuator is DISABLE!")
 
 
 
