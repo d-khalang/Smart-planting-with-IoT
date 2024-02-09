@@ -3,9 +3,26 @@ import sched
 import time
 import json
 from MyMQTT2 import MyMQTT
+import cherrypy
 
+class Adaptor_webservice():
+    exposed = True
+    def __init__(self):
+        pass
+    
+    @cherrypy.tools.json_out()
+    def GET(self, *uri, **params):
+        if len(uri) != 0:
+            if uri[0] == "channels_detail":
+                channelsDetail = adaptor.get_channel_detail()
+                return channelsDetail
+            else:
+                return "Go to /channels_detail"
+        else:
+                return "Go to /channels_detail"
+        
 
-class Adapter():
+class Adaptor():
     def __init__(self, catalog_url, channel_API, user_API_key, clientID):
         self.PERIODIC_UPDATE_INTERVAL = 6000  # Seconds
         self.catalog_url = catalog_url
@@ -30,6 +47,10 @@ class Adapter():
 
         self.check_and_create_channel()
 
+
+    # To get the channels and fields information for user interface
+    def get_channel_detail(self):
+        return self.channelsDetail
 
     # Triggered when a message recieved
     def notify(self, topic, payload):
@@ -120,14 +141,6 @@ class Adapter():
                 except requests.exceptions.RequestException as e:
                     print(f"Failed to create channel {channelName} because: {e}")
 
-            # Step 4: Write data to the channel
-            self.write_data_to_channel(channel_id=channelId)
-
-    
-
-    def write_data_to_channel(self, channel_id):
-        # Your code to write data to the channel goes here
-        pass
 
 
     
@@ -186,18 +199,30 @@ class Adapter():
 
 
 if __name__ == "__main__":
+    conf = {"/": {
+        'request.dispatch':cherrypy.dispatch.MethodDispatcher(),
+        'tools.sessions.on':True
+        }
+    }
     catalog_url = "http://127.0.0.1:8080/"
     channel_API = "https://api.thingspeak.com/update?"  #api_key={API_key}&field"
     user_API_key = "CLZB835RLN16Q1LK"
     clientId = "skyFarming_DS4SST_THA" # Constant + Think speak adopter
-    adapter = Adapter(catalog_url, channel_API, user_API_key, clientId)
-    adapter.allStart()
+    adaptor = Adaptor(catalog_url, channel_API, user_API_key, clientId)
+    adaptor.allStart()
 
-    for _ in range(240):
-        time.sleep(1)
-    adapter.allStop()
-    # Get Channels List:
-    # GET https://api.thingspeak.com/channels.json?api_key=CLZB835RLN16Q1LK
+    cherrypy.config.update({'server.socket_port': 8099})
+    webService = Adaptor_webservice()
+    cherrypy.tree.mount(webService,'/',conf)
+    cherrypy.engine.start()
 
-    # Delete a Channel
-    # DELETE https://api.thingspeak.com/channels/CHANNEL_ID?api_key=CLZB835RLN16Q1LK
+    try:
+        # Wait for 240 seconds
+        for _ in range(240):
+            time.sleep(1)
+    except KeyboardInterrupt:
+        print("Keyboard interrupt detected. Shutting down...")
+        adaptor.allStop()
+        cherrypy.engine.stop()
+    finally:
+        cherrypy.engine.block()
