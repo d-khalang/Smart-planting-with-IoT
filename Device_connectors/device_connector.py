@@ -4,6 +4,7 @@ import requests
 import time
 import json
 import copy
+import cherrypy
 
 ### Defining a general sensor publisher
 class senPublisher():
@@ -26,9 +27,10 @@ class senPublisher():
 
 
 class Device_connector():
+    exposed = True
     def __init__(self, catalog_url, plantConfig, baseClientID,DCID):
         self.catalog_url, self.plantConfig = catalog_url, plantConfig
-        clientID = baseClientID+DCID+"_DCS"    # Device connector sensor
+        self.clientID = baseClientID+DCID+"_DCS"    # Device connector sensor
 
         # Requesting to the catalog for broker's information
         try:
@@ -38,8 +40,8 @@ class Device_connector():
             print(f"Failed to get the broker's information. Probably server is down. Error:{e}")
             return
         
-        self.senPublisher = senPublisher(clientID, broker, port)
-        self.DATA_SENDING_INTERVAL = 10    # each x seconds get the avg of each second data and send
+        self.senPublisher = senPublisher(self.clientID, broker, port)
+        self.DATA_SENDING_INTERVAL = 15    # each x seconds get the avg of each x second data and send
 
         levelID, plantID = DCID[0], DCID[1]
         self.msg = {
@@ -60,6 +62,14 @@ class Device_connector():
         self.PHSen = PHSen()
         self.waterLevelSen = WaterLevelSen()
         self.TDSSen = TDSSen()
+    
+
+    @cherrypy.tools.json_out()
+    def GET(self, *uri, **params):
+        if len(uri) != 0:
+            return self.clientID
+        return "Empty url"
+
 
     # Getting data from 'get_sen_data' and sending it to message broker
     def send_data(self):
@@ -92,7 +102,7 @@ class Device_connector():
 
 
 
-        # for now just tempreture sensor, input like  self.tempSen 
+        # for all sensors
     def get_sen_data(self):
         tempData, lightData, PHData, waterLevelData, TDSData = [], [], [], [], []
 
@@ -116,7 +126,7 @@ class Device_connector():
         
         # !!! create a function to get average and change the message
             # there must be a data dict having the keys temp, light, ....
-        # Get the mean each 10 second
+        # Get the mean each x second
         avgTemp = round(sum(tempData)/len(tempData), 1)
         avgLight = round(sum(lightData)/len(lightData), 1)
         avgPH = round(sum(PHData)/len(PHData), 2)
