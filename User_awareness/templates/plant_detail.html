@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plant Detail</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #333;
+            margin-top: 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #ccc;
+        }
+
+        .plant-info p {
+            margin: 5px 0;
+        }
+
+        .data-chart {
+            margin-top: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-gap: 20px;
+        }
+
+        .chart-card {
+            padding: 20px;
+            border-radius: 10px;
+            background-color: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .chart-card iframe {
+            border: none;
+            width: 100%;
+            height: 300px;
+        }
+
+        .device-info {
+            margin-top: 20px;
+        }
+
+        .device-info h3 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .device {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #f1f1f1;
+        }
+
+        .device-name {
+            font-weight: bold;
+        }
+
+        .device-status {
+            color: green;
+        }
+
+        .device-status.off {
+            color: red;
+        }
+
+        .device-info p:last-child {
+            margin-bottom: 0;
+        }
+
+        @media screen and (max-width: 600px) {
+            .data-chart {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Plant Details</h2>
+        <div class="plant-info">
+            <p>Plant ID: {{ plant.plantID }}</p>
+            <p>Level: {{ plant.levelID }}</p>
+            <p>Plant Kind: {{ plant.plantKind }}</p>
+            <p>Planting Date: {{ plant.plantingDate }}</p>
+        </div>
+        <div class="data-chart">
+            {% for device in plant.devicesList %}
+                {% if device.measureType[0] in ["temperature", "PH", "light", "TDS", "waterLevel"] %}
+                {% set field = device.measureType[0] %}
+                <div class="chart-card">
+                    <h3>{{ field }}</h3>
+                    <iframe src="https://thingspeak.com/channels/{{ channelID }}/charts/{{ fields[field][-1] }}?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&type=line&update=15"></iframe>
+                </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+        <div class="device-info">
+            <h3>Devices</h3>
+            {% for device in plant.devicesList %}
+            <div class="device">
+                <p class="device-name">{{ device.deviceName }}</p>
+                <p class="device-status {{ 'off' if device.deviceStatus == 'OFF' else '' }}">
+                    Status: {{ device.deviceStatus }}
+                </p>
+                <p>Last Update: {{ device.lastUpdate }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
