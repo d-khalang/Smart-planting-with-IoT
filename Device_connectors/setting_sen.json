@@ -1,0 +1,252 @@
+{
+    "baseTopic": "skyFarming",
+    "clientID": "skyFarming_DS4SST",
+    "DCID_dict": {
+        "01":{
+        "levelID": 0,
+        "plantID": 1,
+        "plantKind": "Lettuce",
+        "plantingDate": "2023-12-29",
+        "usersList": [
+          {
+              "userID": 1
+          }
+      ],
+        "devicesList": [{
+            "deviceID": 10101,
+            "deviceName": "tempsen",
+            "deviceStatus": "ON",
+            "availableStatuses": [
+                "DISABLE",
+                "ON"],
+            "deviceLocation": {
+                "levelID": 0,
+                "plantID": 1
+            },
+            "measureType": [
+                "temperature"
+            ],
+            "availableServices": [
+                "MQTT"
+            ],
+            "servicesDetails": [
+                {
+                    "serviceType": "MQTT",
+                    "topic": [
+                        "skyFarming/sensors/0/1/temperature"
+                    ]
+                }
+            ],
+            "lastUpdate": ""
+        },
+        {
+            "deviceID": 10102,
+            "deviceName": "PHsen",
+            "deviceStatus": "ON",
+            "availableStatuses": [
+                "DISABLE",
+                "ON"],
+            "deviceLocation": {
+                "levelID": 0,
+                "plantID": 1
+            },
+            "measureType": [
+                "PH"
+            ],
+            "availableServices": [
+                "MQTT"
+            ],
+            "servicesDetails": [
+                {
+                    "serviceType": "MQTT",
+                    "topic": [
+                        "skyFarming/sensors/0/1/PH"
+                    ]
+                }
+            ],
+            "lastUpdate": ""
+        },
+        {
+            "deviceID": 10103,
+            "deviceName": "lightsen",
+            "deviceStatus": "ON",
+            "availableStatuses": [
+                "DISABLE",
+                "ON"
+            ],
+            "deviceLocation": {
+                "levelID": 0,
+                "plantID": 1
+            },
+            "measureType": [
+                "light"
+            ],
+            "availableServices": [
+                "MQTT"
+            ],
+            "servicesDetails": [
+                {
+                    "serviceType": "MQTT",
+                    "topic": [
+                        "skyFarming/sensors/0/1/light"
+                    ]
+                }
+            ],
+            "lastUpdate": ""
+        }
+    ],
+        "lastUpdate": "2023-12-29 12:15:39"
+    },
+        "11":{
+        "levelID": 1,
+        "plantID": 1,
+        "plantKind": "Lettuce",
+        "plantingDate": "2023-12-29",
+        "usersList": [
+          {
+              "userID": 1
+          }
+      ],
+        "devicesList": [{
+            "deviceID": 11101,
+            "deviceName": "tempsen",
+            "deviceStatus": "ON",
+            "availableStatuses": [
+                "DISABLE",
+                "ON"],
+            "deviceLocation": {
+                "levelID": 1,
+                "plantID": 1
+            },
+            "measureType": [
+                "temperature"
+            ],
+            "availableServices": [
+                "MQTT"
+            ],
+            "servicesDetails": [
+                {
+                    "serviceType": "MQTT",
+                    "topic": [
+                        "skyFarming/sensors/1/1/temperature"
+                    ]
+                }
+            ],
+            "lastUpdate": ""
+        },
+        {
+            "deviceID": 11102,
+            "deviceName": "PHsen",
+            "deviceStatus": "ON",
+            "availableStatuses": [
+                "DISABLE",
+                "ON"],
+            "deviceLocation": {
+                "levelID": 1,
+                "plantID": 1
+            },
+            "measureType": [
+                "PH"
+            ],
+            "availableServices": [
+                "MQTT"
+            ],
+            "servicesDetails": [
+                {
+                    "serviceType": "MQTT",
+                    "topic": [
+                        "skyFarming/sensors/1/1/PH"
+                    ]
+                }
+            ],
+            "lastUpdate": ""
+        },
+        {
+            "deviceID": 11103,
+            "deviceName": "lightsen",
+            "deviceStatus": "ON",
+            "availableStatuses": [
+                "DISABLE",
+                "ON"
+            ],
+            "deviceLocation": {
+                "levelID": 1,
+                "plantID": 1
+            },
+            "measureType": [
+                "light"
+            ],
+            "availableServices": [
+                "MQTT"
+            ],
+            "servicesDetails": [
+                {
+                    "serviceType": "MQTT",
+                    "topic": [
+                        "skyFarming/sensors/1/1/light"
+                    ]
+                }
+            ],
+            "lastUpdate": ""
+        },
+        {
+            "deviceID": 11113,
+            "deviceName": "waterLevelsen",
+            "deviceStatus": "ON",
+            "availableStatuses": [
+                "DISABLE",
+                "ON"
+            ],
+            "deviceLocation": {
+                "levelID": 1,
+                "plantID": 1
+            },
+            "measureType": [
+                "waterLevel"
+            ],
+            "availableServices": [
+                "MQTT"
+            ],
+            "servicesDetails": [
+                {
+                    "serviceType": "MQTT",
+                    "topic": [
+                        "skyFarming/sensors/1/1/waterLevel"
+                    ]
+                }
+            ],
+            "lastUpdate": ""
+        },
+        {
+            "deviceID": 11114,
+            "deviceName": "TDSsen",
+            "deviceStatus": "ON",
+            "availableStatuses": [
+                "DISABLE",
+                "ON"
+            ],
+            "deviceLocation": {
+                "levelID": 1,
+                "plantID": 1
+            },
+            "measureType": [
+                "TDS"
+            ],
+            "availableServices": [
+                "MQTT"
+            ],
+            "servicesDetails": [
+                {
+                    "serviceType": "MQTT",
+                    "topic": [
+                        "skyFarming/sensors/1/1/TDS"
+                    ]
+                }
+            ],
+            "lastUpdate": ""
+        }
+    ],
+        "lastUpdate": "2023-12-29 12:15:39"
+    }
+}
+}
