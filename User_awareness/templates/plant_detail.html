@@ -3,6 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Link to Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Include jQuery library -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Link to Bootstrap JavaScript -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <title>Plant Detail</title>
     <style>
         body {
@@ -52,6 +58,45 @@
             height: 300px;
         }
 
+        /* Button styles */
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            color: white;
+            font-size: 14px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        /* Button color classes */
+        .button.blue {
+            background-color: #007bff; /* Blue for default status */
+        }
+
+        .button.green {
+            background-color: #28a745; /* Green for ON status */
+        }
+
+        .button.red {
+            background-color: #dc3545; /* Red for DISABLED status */
+        }
+
+        .button.orange {
+            background-color: #ffc107; /* Orange for LOW, MID, HIGH status */
+        }
+
+        .button.yellow {
+            background-color: #ffca28; /* Yellow for LOW, MID, HIGH status */
+        }
+
+        /* Hover effect */
+        .button:hover {
+            opacity: 0.8;
+        }
+
+        /* Additional styling */
         .device-info {
             margin-top: 20px;
         }
@@ -90,6 +135,25 @@
             }
         }
     </style>
+    <script>
+        function sendStatusMessage(deviceID, levelID, plantID, status) {
+            $.ajax({
+                type: "POST",
+                url: "/send_status_message",
+                data: JSON.stringify({ deviceID: deviceID, levelID: levelID, plantID: plantID, status: status }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function(response) {
+                    // Display a pop-up message for confirmation using Bootstrap modal
+                    $('#confirmationModal .modal-body').text(response.message);
+                    $('#confirmationModal').modal('show');
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
+            });
+        }
+    </script>
 </head>
 <body>
     <div class="container">
@@ -106,7 +170,7 @@
                 {% set field = device.measureType[0] %}
                 <div class="chart-card">
                     <h3>{{ field }}</h3>
-                    <iframe src="https://thingspeak.com/channels/{{ channelID }}/charts/{{ fields[field][-1] }}?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&type=line&update=15"></iframe>
+                    <iframe src="https://thingspeak.com/channels/{{ channelID }}/charts/{{ fields[field][-1] }}?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&type=spline&update=15"></iframe>
                 </div>
                 {% endif %}
             {% endfor %}
@@ -116,12 +180,36 @@
             {% for device in plant.devicesList %}
             <div class="device">
                 <p class="device-name">{{ device.deviceName }}</p>
-                <p class="device-status {{ 'off' if device.deviceStatus == 'OFF' else '' }}">
+                <p class="device-status {{ 'off' if device.deviceStatus == 'OFF' else 'on' if device.deviceStatus == 'ON' else 'disabled' }}">
                     Status: {{ device.deviceStatus }}
                 </p>
-                <p>Last Update: {{ device.lastUpdate }}</p>
+                <div class="status-buttons">
+                    {% for status in device.availableStatuses %}
+                    <!-- Trigger sendStatusMessage function on button click -->
+                    <a href="#" class="button {{ get_button_class(status) }}" onclick="sendStatusMessage('{{ device.deviceID }}', '{{ device.deviceLocation.levelID}}', '{{ device.deviceLocation.plantID}}', '{{ status }}')">{{ status }}</a>
+                    {% endfor %}
+                </div>
             </div>
             {% endfor %}
+        </div>
+    </div>
+    <!-- Bootstrap modal for confirmation message -->
+    <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmationModalLabel">Confirmation</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Message content will be inserted here -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
         </div>
     </div>
 </body>
