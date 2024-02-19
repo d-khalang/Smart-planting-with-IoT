@@ -29,7 +29,7 @@ class Device_connector_act():
         self.topic = f"skyFarming/commands/{levelID}/{plantID}/#"
         self.client.mySubscribe(self.topic)
 
-
+    
     @cherrypy.tools.json_out()
     def GET(self, *uri, **params):
         if len(uri) != 0:
@@ -40,6 +40,25 @@ class Device_connector_act():
                 return "Wrong URL, Go to devices to see the devices list"
             
         return "Go to devices to see the devices list"
+    
+
+    @cherrypy.tools.json_in()
+    @cherrypy.tools.json_out()
+    def PUT(self, *uri, **params):
+        if len(uri) != 0:
+            if uri[0] == "device_status":
+                body = cherrypy.request.json
+                deviceID, status = int(body["deviceID"]), body["status"]
+                for device in self.devices:
+                    if deviceID == device["deviceID"]:
+                        print(f"device {deviceID} -> {status}")
+                        if status in ["OFF", "LOW", "MID", "HIGH", "ON"]:
+                            device.update({"deviceStatus":status})
+                            return f"Device {deviceID} updated to {status}"
+                        return "Status is recieved, performing the function"
+                return {"unknown": "device not found"}
+
+        else: return {"unsuccessful": "No uri"}
 
         
     # Will be triggered when a message is received
@@ -98,7 +117,7 @@ class Device_connector_act():
         
             # Check if post request was successful
             if postReq_status == 201:
-                return "POST request successful"
+                print("POST request successful")
         
             # If the device exists, checks for the put request
             elif postReq_status == 202:
@@ -112,7 +131,7 @@ class Device_connector_act():
 
                 if putReq_status == 201:
                     print("device registeration is updated successfully")
-                    return "PUT request successful"
+                    print("PUT request successful")
                 else:
                     return f"""POST: {postReq.text}
                     PUT: {putReq.text}"""
