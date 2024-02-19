@@ -41,7 +41,8 @@ class Device_connector():
             return
         
         self.senPublisher = senPublisher(self.clientID, broker, port)
-        self.DATA_SENDING_INTERVAL = 15    # each x seconds get the avg of each x second data and send
+        self.DATA_AVG_INTERVAL = 10    # each x seconds get the avg of each x second data and send
+        self.DATA_SENDING_INTERVAL = 20    # wait x seconds after sending each data (for the constraints of thingSpeak)
 
         levelID, plantID = DCID[0], DCID[1]
         self.msg = {
@@ -67,9 +68,12 @@ class Device_connector():
     @cherrypy.tools.json_out()
     def GET(self, *uri, **params):
         if len(uri) != 0:
-            return self.clientID
-        return "Empty url"
-
+            if uri[0] == "plants":
+                return self.plantConfig
+            else:
+                return "Wrong URL, Go to '/plants' to see the plant information"
+            
+        return "Go to '/plants' to see the plant information"
 
     # Getting data from 'get_sen_data' and sending it to message broker
     def send_data(self):
@@ -83,16 +87,16 @@ class Device_connector():
 
         self.senPublisher.publish(msgTemp["bn"], msgTemp)
         print(f"message {msgTemp['e'][0]['v']} published on topic: {msgTemp['bn']}")
-        time.sleep(1)
+        time.sleep(self.DATA_SENDING_INTERVAL)
         self.senPublisher.publish(msgLight["bn"], msgLight)
         print(f"message {msgLight['e'][0]['v']} published on topic: {msgLight['bn']}")
-        time.sleep(1)
+        time.sleep(self.DATA_SENDING_INTERVAL)
         self.senPublisher.publish(msgPH["bn"], msgPH)
         print(f"message {msgPH['e'][0]['v']} published on topic: {msgPH['bn']}")
-        time.sleep(1)
+        time.sleep(self.DATA_SENDING_INTERVAL)
         self.senPublisher.publish(msgWaterLevel["bn"], msgWaterLevel)
         print(f"message {msgWaterLevel['e'][0]['v']} published on topic: {msgWaterLevel['bn']}")
-        time.sleep(1)
+        time.sleep(self.DATA_SENDING_INTERVAL)
         self.senPublisher.publish(msgTDS["bn"], msgTDS)
         print(f"message {msgTDS['e'][0]['v']} published on topic: {msgTDS['bn']}")
 
@@ -107,7 +111,7 @@ class Device_connector():
         tempData, lightData, PHData, waterLevelData, TDSData = [], [], [], [], []
 
         # Generate a value every second for every sensor
-        for i in range(self.DATA_SENDING_INTERVAL):
+        for i in range(self.DATA_AVG_INTERVAL):
             datum = self.tempSen.generate_data()
             tempData.append(datum)
 
