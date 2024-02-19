@@ -6,7 +6,7 @@ import cherrypy
 if __name__ == "__main__":
     catalog_url = "http://127.0.0.1:8080/"
     # plantConfigFileName = "devices_configuration.json"
-    settingFile = "setting.json"
+    settingFile = "setting_sen.json"
     
     
     # Information needed for creating an Mqtt client
@@ -21,7 +21,7 @@ if __name__ == "__main__":
 
     # Creating device connectors according to their IDs and registration details of their plant units
     for DCID,plantConfig in DCID_dict.items():
-        DC_name = f"raspbery_{DCID}"
+        DC_name = f"raspberry_{DCID}"
         deviceConnectors[DC_name] = Device_connector(catalog_url, plantConfig, baseClientID, DCID)
 
     # Cherrypy configuration
