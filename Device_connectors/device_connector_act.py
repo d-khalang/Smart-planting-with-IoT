@@ -117,7 +117,7 @@ class Device_connector_act():
         
             # Check if post request was successful
             if postReq_status == 201:
-                print("POST request successful")
+                print("POST request of device registeration successful")
         
             # If the device exists, checks for the put request
             elif postReq_status == 202:
@@ -131,7 +131,7 @@ class Device_connector_act():
 
                 if putReq_status == 201:
                     print("device registeration is updated successfully")
-                    print("PUT request successful")
+                    
                 else:
                     return f"""POST: {postReq.text}
                     PUT: {putReq.text}"""

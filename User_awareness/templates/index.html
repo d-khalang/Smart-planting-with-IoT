@@ -3,12 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Anta&family=Madimi+One&display=swap" rel="stylesheet">
     <title>Sky Farming Interface</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Anta', sans-serif;
             margin: 0;
             padding: 0;
+        }
+        h1,h2 {
+            font-family: 'Madimi One', sans-serif;
         }
         header {
             background-color: #4CAF50;
@@ -25,7 +29,7 @@
         .plant-card {
             border: 1px solid #ccc;
             border-radius: 5px;
-            padding: 20px;
+            padding: 10px;
             margin: 20px;
             background-color: #f9f9f9;
             box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
@@ -34,6 +38,13 @@
         }
         .plant-card:hover {
             box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+        }
+        .plant-id {
+            background-color: #e6f7e8; /* Light green background for plantID and levelID section */
+            text-align: center;
+            padding: 1px;
+            border-radius: 5px;
+            margin-bottom: 10px;
         }
         .plant-info {
             margin-bottom: 10px;
@@ -46,11 +57,23 @@
             margin: 5px 0;
             font-size: 16px;
         }
+        .device-info {
+            margin-bottom: 20px;
+            background-color: #f0f0f0; /* Light gray background for devices section */
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .device-info p {
+            margin: 5px;
+        }
+        .device-info h4 {
+            margin-top: 0;
+        }
         .plant-link {
             text-decoration: none;
             color: #333;
             background-color: #ddd;
-            padding: 10px 20px;
+            padding: 10px 15px;
             border-radius: 5px;
             transition: 0.3s;
         }
@@ -68,17 +91,18 @@
         <h2 class="title">Available Plants</h2>
         {% for plant in plants %}
         <div class="plant-card">
+            <div class="plant-id">
+                <h3>Plant {{ plant.plantID }}{{ plant.levelID }}</h3>    
+            </div>
             <div class="plant-info">
-                <h3>Plant ID: {{ plant.plantID }}</h3>
-                <p>Level: {{ plant.levelID }}</p>
                 <p>Plant Kind: {{ plant.plantKind }}</p>
                 <p>Planting Date: {{ plant.plantingDate }}</p>
-                <div class="device-info">
-                    <h4>Devices</h4>
-                    {% for device in plant.devicesList %}
-                    <p>{{ device.deviceName }}</p>
-                    {% endfor %}
-                </div>
+            </div>
+            <div class="device-info">
+                <h4>Devices</h4>
+                {% for device in plant.devicesList %}
+                <p>{{ device.deviceName }}</p>
+                {% endfor %}
             </div>
             <a href="/plant/{{ plant.levelID }}/{{ plant.plantID }}" class="plant-link">View Plant</a>
         </div>

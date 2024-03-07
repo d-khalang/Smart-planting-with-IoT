@@ -475,7 +475,10 @@ class Controler():
 
     ## Disconnecting from the broker
     def exit(self):
-        self.client.stop()
+        try:
+            self.client.stop()
+        except KeyboardInterrupt:
+            print("Keyboard interrupt detected during client stop. Exiting...")
 
 
 
@@ -484,6 +487,12 @@ if __name__ == "__main__":
     catalog_url = "http://127.0.0.1:8080/"
 
     controler = Controler(catalog_url)
-    for i in range(60):
+
+
+    try:
+        # Wait for 6000 seconds
+        for _ in range(6000):
             time.sleep(1)
-    controler.exit()
+    except KeyboardInterrupt:
+        print("Keyboard interrupt detected. Shutting down...")
+        controler.exit()

@@ -24,7 +24,7 @@ class Adaptor_webservice():
 
 class Adaptor():
     def __init__(self, catalog_url, channel_API, user_API_key, clientID):
-        self.PERIODIC_UPDATE_INTERVAL = 6000  # Seconds
+        self.PERIODIC_UPDATE_INTERVAL = 600  # Seconds
         self.catalog_url = catalog_url
         self.channel_API = channel_API
         self.user_API_key = user_API_key

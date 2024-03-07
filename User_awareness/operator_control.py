@@ -6,9 +6,10 @@ import time
 
 class Operator_control():
     exposed = True
-    def __init__(self, catalog_url, adaptor_url):
+    def __init__(self, catalog_url, adaptor_url, thingSpeak_channels_url = "https://api.thingspeak.com/channels/"):
         self.catalog_url = catalog_url
         self.adaptor_url = adaptor_url
+        self.thingSpeak_channels_url = thingSpeak_channels_url
         self.PERIODIC_UPDATE_INTERVAL = 600  # Seconds
         self.plants = None
         self.realTimePlants = {}
@@ -27,15 +28,56 @@ class Operator_control():
     @cherrypy.tools.json_out()
     def GET(self, *uri, **params):
         if len(uri) != 0:
+            
+            # All information of the available plants
             if uri[0] == "plants":
                 self.get_realtime_plant()
-                return self.realTimePlants
+                if len(uri) > 1:
+                    levelPlantID = uri[1]
+                    return self.realTimePlants.get(levelPlantID)
+                
+                else: return self.realTimePlants
             
+            # Information about the thingSpeak channel of a specific plant
             elif uri[0] == "channels_detail":
                 if len(uri) > 1:
                     return self.get_channel_detail(uri[1])
                 else: 
                     return "Enter name of the channel"
+
+            # Last data sensed for each sensing type of a specific plant    
+            elif uri[0] == "sensing_data":
+                if len(uri) > 1:
+                    # Gets channel id and the fields and their sensing kind
+                    channel_detail = self.get_channel_detail(uri[1])
+                    if channel_detail:
+                        fields, channelID = channel_detail["fields"], channel_detail['channelId']
+
+                        # requests thingSpeak for the last 5 data point to get the last value of each sensor
+                        try:
+                            # https://api.thingspeak.com/channels/<2425367>/feeds.json?results=5
+                            req_g = requests.get(f"{self.thingSpeak_channels_url}{str(channelID)}/feeds.json?results=5")
+                            print("Get request of sending data received by the operator control")
+
+                            dataList = req_g.json()["feeds"]
+                            currentDataDict = {}
+
+                            for datumDict in dataList:
+                                for field, value in datumDict.items():
+                                    if field.startswith("field") and value:
+                                        currentDataDict[fields[field]] = value
+                            
+                            return currentDataDict
+
+                        except requests.exceptions.RequestException as e:
+                            print(f"failed to get sensing data from thingSpeak. Error:{e}")
+
+
+                    else: return "Channel is not available"
+
+                else: return "Enter name of the channel"
+
+
             else:
                 return """Wrong URL, Go to '/plants' to see the real-time information of the operating plants. 
             Or go to '/channels_detail to see thingspeak's channels' information"""
@@ -43,6 +85,7 @@ class Operator_control():
         else:
             return """Go to '/plants' to see the real-time information of the operating plants. 
             Or go to '/channels_detail to see thingspeak's channels' information"""
+        
         
         
     @cherrypy.tools.json_in()
@@ -125,7 +168,8 @@ class Operator_control():
 
     # Getting base actuator url for posting the devices' status
     def get_actuator_url(self):
-        self.baseUrlActuators = "/".join(self.plants[0]["urlActuators"].strip().split('/')[0:3])
+        if self.plants:
+            self.baseUrlActuators = "/".join(self.plants[0]["urlActuators"].strip().split('/')[0:3])
         
 
             

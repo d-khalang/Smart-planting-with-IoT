@@ -23,7 +23,7 @@ class WebCatalog():
 
     @cherrypy.tools.json_out()
     def GET(self, *uri, **params):
-        if len(uri)== 0:
+        if len(uri) == 0:
             return "No valid url. Enter a valid url among: broker, devices, device/{id}, plants, plant/{levelID}/{plantID}, topic, plantkinds"
         else:
             path = uri[0].lower()
@@ -100,7 +100,7 @@ class WebCatalog():
                 theTime = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                 newDevice["lastUpdate"] = theTime
                 
-                #checking if the device exists in devices list
+                # checking if the device exists in devices list
                 if any(device["deviceID"] == newDevice["deviceID"] for device in self.devices):
                     return "Device already exists", 202    
 
@@ -149,7 +149,6 @@ class WebCatalog():
                     self.save_catalog()
                     return "Plant is added successfully", 201
 
-            ### Adding a User
                 
             ### Adding a Plant kind
             elif path == "plantkinds":
@@ -282,7 +281,7 @@ class WebCatalog():
                         Updating a new kind of plant -> /plantkinds"""
 
 
-            ### Updating a User
+            
 
 
 
@@ -360,3 +359,12 @@ if __name__ == "__main__":
     cherrypy.tree.mount(webService,'/',conf)
     cherrypy.engine.start()
     cherrypy.engine.block()
+
+    try:
+        while True:
+            time.sleep(1)
+    except KeyboardInterrupt:
+        print("Keyboard interrupt detected. Shutting down...")
+        cherrypy.engine.stop()
+    finally:
+        cherrypy.engine.block()
