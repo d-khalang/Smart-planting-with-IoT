@@ -1,47 +1,35 @@
 # Smart Planting with IoT - SkyFarming Project
 
 ## Overview
-SkyFarming is an innovative IoT project dedicated to hydroponic vertical farming in urban skyscrapers. The project leverages IoT devices to monitor and control various aspects of plant growth across different levels of a tower.
+SkyFarming is an innovative IoT project dedicated to hydroponic vertical farming in urban skyscrapers. Leveraging IoT technology, it facilitates efficient monitoring and control of various aspects of plant growth across different levels of a tower.
 
 ## Project Structure
-The project is organized around a central device and resource registry referred to as the "Catalog." This registry plays a crucial role in managing and organizing data related to the system and its devices.
+The project consists of several interconnected components:
 
 ### Catalog
-The catalog is implemented in the script `catalog_registery.py`. Serving as the core of the system, it records and organizes data related to devices and resources. The collected data is stored in a JSON file named `catalog.json`, intended to be the project's database.
+- **Files:** `catalog_registry.py`, `catalog.json`
+- **Description:** The catalog serves as the device and service registry, managed by `catalog_registry.py`. It reads, updates, and writes information to `catalog.json`, functioning as a small-scale database. `catalog_registry.py` provides a web service with methods for GET, POST, and PUT requests, enabling device connectors to register themselves and their devices. It also features a scheduler to remove outdated device registrations.
 
 ### Device Connectors
-The `Device_connectors` directory now includes additional scripts:
-
-1. **`device_connector.py`:** In its current stage, this script registers all devices to the catalog. In the next stage, it will be responsible for gathering sensor data and communicating it to other parts of the system.
-
-2. **`DC_instancer.py`:** This script instantiates device connectors according to the device connector IDs specified in `setting.json`.
-
-3. **`MyMQTT.py`:** A utility class that simplifies the process of creating MQTT publishers and subscribers. It utilizes methods from the `paho_mqtt` library.
-
-4. **`sensors.py`:** This script emulates sensor data. Currently, it includes a temperature sensor, and additional sensors can be added in future developments.
-
-5. **`setting.json`:** This JSON file contains information about the broker, topic, and device connector IDs.
+- **Files:** `device_connector.py`, `device_connector_act.py`, `DC_instancer.py`, `DC_instancer_act.py`, `sensors.py`, `setting_act.json`, `setting_sen.json`
+- **Description:** Device connectors are responsible for managing sensor and actuator devices for each plant unit. `sensors.py` simulates sensor data, which is published to corresponding MQTT topics by `device_connector.py` and `device_connector_act.py`. `DC_instancer.py` and `DC_instancer_act.py` dynamically create device connectors based on configurations in `setting_act.json` and `setting_sen.json`. These connectors register plant and device information with the catalog.
 
 ### Control Units
+- **Files:** `CU_instancer.py`, `MyMQTT2.py`, `control_unit.py`
+- **Description:** Control units manage plant conditions by subscribing to plant topics, receiving sensing information, and taking corrective actions if necessary. `CU_instancer.py` dynamically creates control units, optimizing their number based on the active plants and levels. They interact with the catalog to retrieve plant information and intervene when sensor data deviates from optimal conditions.
 
-The Control Units play a vital role in ensuring optimal conditions for plant growth. Currently, the following script is in progress:
+### ThingSpeak Integration
+- **File:** `adaptor.py`
+- **Description:** This component integrates with ThingSpeak for data storage and visualization. `adaptor.py` subscribes to plant topics, receives sensing information via MQTT, and writes data to ThingSpeak channels. It also creates ThingSpeak channels as needed.
 
-1. **`control_unit_1.py`:** This script subscribes to the topics of all the sensors in the building, monitoring each level and plant ID. It checks the temperature by sending a GET request to the catalog and compares it with the suitable temperature for the specific plant. If the temperature is not within the appropriate range, the control unit sends commands to take corrective actions.
+### User Awareness
+- **Files:** `operator_control.py`, `interface.py`, `telegbot.py`
+- **Description:** User awareness is facilitated through three sections:
+  - `operator_control.py` manages information for the operator interface and Telegram bot, gathering data on available ThingSpeak channels, sensor and actuator statuses.
+  - `interface.py` creates a web interface using Flask, displaying plant information, ThingSpeak graphs, and enabling operator interaction with actuators.
+  - `telegbot.py` is a Telegram bot allowing end-users to monitor plant status, view sensing data, and control devices.
 
-
-## Components
-Each plant unit is equipped with two main types of IoT devices:
-
-1. **Sensor Devices:** Responsible for collecting data related to the environment, including temperature, pH, nutrition, and light conditions.
-
-2. **Actuator Devices:** Control physical components, enabling automation of processes critical to plant growth.
-
-## Current Stage
-At this development stage, the catalog and device connector scripts have been implemented. The catalog writes data to the `catalog.json` file, and the device connector registers devices to the catalog.
-The `device_connector.py` script has also been updated to create a publisher using `MyMQTT` and a sensor using `sensors.py`. It publishes the data generated by the sensor.
-
-## Getting Started
-Loading ...
 
 ## Future Development
-The instruction will be updated soon ...
+The project lays the groundwork for comprehensive monitoring and control of plant units. Future enhancements may include scalability improvements, real device integration, and advanced data analytics.
+
