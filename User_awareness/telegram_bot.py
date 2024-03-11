@@ -202,7 +202,7 @@ if __name__ == "__main__":
     # print(botManager.get_actuators_status("11"))
     # print("\n\n")
     # print(botManager.get_sensors_data("11"))
-    token = "7041795282:AAELHjrj81tYPuS1D1XkVfHCK3L9n1dRL7g"
+    token = "00000000"
     bot = TeleBot(token, operator_control_url, ownershipFileName)
     
 
