@@ -3,6 +3,9 @@
 ## Overview
 SkyFarming is an innovative IoT project dedicated to hydroponic vertical farming in urban skyscrapers. Leveraging IoT technology, it facilitates efficient monitoring and control of various aspects of plant growth across different levels of a tower.
 
+![image_2024-03-11_17-08-34](https://github.com/d-khalang/Smart-planting-with-IoT/assets/77327582/83bdcbb1-c426-468d-9a80-6c059e0fed77)
+
+
 ## Project Structure
 The project consists of several interconnected components:
 

@@ -206,7 +206,7 @@ if __name__ == "__main__":
     }
     catalog_url = "http://127.0.0.1:8080/"
     channel_API = "https://api.thingspeak.com/update?"  #api_key={API_key}&field"
-    user_API_key = "CLZB835RLN16Q1LK"
+    user_API_key = "FFFFF"
     clientId = "skyFarming_DS4SST_THA" # Constant + Think speak adopter
     adaptor = Adaptor(catalog_url, channel_API, user_API_key, clientId)
     adaptor.allStart()
