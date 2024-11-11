@@ -34,5 +34,6 @@ The project consists of several interconnected components:
 
 
 ## Future Development
-The project lays the groundwork for comprehensive monitoring and control of plant units. Future enhancements may include scalability improvements, real device integration, and advanced data analytics.
+The project lays the groundwork for comprehensive monitoring and control of plant units. 
+Future enhancements may include scalability improvements, real device integration, and advanced data analytics.
 
